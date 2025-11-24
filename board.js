@@ -1,24 +1,32 @@
-import { createCardElement, flipCard } from './card.js';
+import { createCardElement, flipCardVisual, hideCardVisual } from './card.js';
 
 const allCards = [
-    '🍎', '🍐', '🍒', '🍉', '🍇', '🍓', '🍌', '🍍', '🥝', '🥥', '🍑', '🍈', '🍋', '🍊', '🍏', '🍅'
+    '🍎','🍐','🍒','🍉','🍇','🍓','🍌','🍍',
+    '🥝','🥥','🍑','🍈','🍋','🍊','🍏','🍅'
 ];
+
 const gameBoard = document.getElementById('game-board');
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 
 function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
 }
 
 export function createBoard(cardCount) {
+    gameBoard.innerHTML = '';
     const selectedCards = allCards.slice(0, cardCount / 2);
     const cards = [...selectedCards, ...selectedCards];
     shuffle(cards);
+
     cards.forEach(card => {
         const cardElement = createCardElement(card);
-        cardElement.addEventListener('click', () => flipCard(cardElement, handleCardFlip));
+        cardElement._handler = () => handleCardFlip(cardElement);
+        cardElement.addEventListener('click', cardElement._handler);
         gameBoard.appendChild(cardElement);
     });
 }
@@ -27,8 +35,7 @@ function handleCardFlip(cardElement) {
     if (lockBoard) return;
     if (cardElement === firstCard) return;
 
-    cardElement.classList.add('flipped');
-    cardElement.textContent = cardElement.dataset.card;
+    flipCardVisual(cardElement);
 
     if (!firstCard) {
         firstCard = cardElement;
@@ -36,27 +43,25 @@ function handleCardFlip(cardElement) {
     }
 
     secondCard = cardElement;
-    checkForMatch();
-}
+    lockBoard = true;
 
-function checkForMatch() {
-    let isMatch = firstCard.dataset.card === secondCard.dataset.card;
-    isMatch ? disableCards() : unflipCards();
+    if (firstCard.dataset.card === secondCard.dataset.card) {
+        disableCards();
+    } else {
+        unflipCards();
+    }
 }
 
 function disableCards() {
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
+    firstCard.removeEventListener('click', firstCard._handler);
+    secondCard.removeEventListener('click', secondCard._handler);
     resetBoard();
 }
 
 function unflipCards() {
-    lockBoard = true;
     setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        firstCard.textContent = '';
-        secondCard.textContent = '';
+        hideCardVisual(firstCard);
+        hideCardVisual(secondCard);
         resetBoard();
     }, 1500);
 }
