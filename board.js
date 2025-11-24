@@ -9,6 +9,7 @@ const gameBoard = document.getElementById('game-board');
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
+let matchedPairs = 0;
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -19,6 +20,7 @@ function shuffle(array) {
 
 export function createBoard(cardCount) {
     gameBoard.innerHTML = '';
+    matchedPairs = 0;
     const selectedCards = allCards.slice(0, cardCount / 2);
     const cards = [...selectedCards, ...selectedCards];
     shuffle(cards);
@@ -55,7 +57,14 @@ function handleCardFlip(cardElement) {
 function disableCards() {
     firstCard.removeEventListener('click', firstCard._handler);
     secondCard.removeEventListener('click', secondCard._handler);
+    matchedPairs++;
     resetBoard();
+
+    if (matchedPairs === (gameBoard.children.length / 2)) {
+        setTimeout(() => {
+            alert("Onneksi olkoon! Löysit kaikki parit!");
+        }, 500);
+    }
 }
 
 function unflipCards() {
