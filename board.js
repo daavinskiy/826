@@ -25,10 +25,8 @@ export function createBoard(cardCount) {
 
     cards.forEach(card => {
         const cardElement = createCardElement(card);
-
         cardElement._handler = () => handleCardFlip(cardElement);
         cardElement.addEventListener('click', cardElement._handler);
-
         gameBoard.appendChild(cardElement);
     });
 }
