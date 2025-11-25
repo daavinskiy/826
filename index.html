@@ -2,14 +2,27 @@
 <html lang="fi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muistipeli</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <h1>Muistipeli</h1>
-    <button id="restart-button">Uusi peli</button>
-    <div id="game-board"></div>
-    <script type="module" src="./js/game.js"></script>
+
+    <div class="controls">
+        <label for="cardCount">Kuinka monta korttia?</label>
+        <select id="cardCount">
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16" selected>16</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+        </select>
+
+        <button id="newGameButton">Uusi peli</button>
+    </div>
+
+    <div id="gameBoard" class="board"></div>
+
+    <script type="module" src="js/game.js"></script>
 </body>
 </html>

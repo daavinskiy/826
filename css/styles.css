@@ -1,0 +1,94 @@
+:root {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --button-bg: #1e1e1e;
+    --button-text: #ffffff;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#gameBoard {
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+    grid-template-columns: repeat(4, 100px);
+    grid-auto-rows: 100px;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, background-image 0.6s ease;
+    animation: appear 0.5s ease forwards;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 500px) {
+    #gameBoard {
+        grid-template-columns: repeat(2, 80px);
+        grid-auto-rows: 80px;
+    }
+
+    .card {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 501px) and (max-width: 800px) {
+    #gameBoard {
+        grid-template-columns: repeat(3, 90px);
+        grid-auto-rows: 90px;
+    }
+
+    .card {
+        width: 90px;
+        height: 90px;
+    }
+}
